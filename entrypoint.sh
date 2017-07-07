@@ -4,6 +4,7 @@ set -e
 mkdir -p ~/.ssh
 
 if [ ! -z "$SSH_PRIVATE_KEY" ]; then
+  echo "Copying in ssh private key ...";
   echo -e "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
   chmod 400 ~/.ssh/id_rsa
 
@@ -13,25 +14,29 @@ fi
 
 echo -e "Host * \n    StrictHostKeyChecking no" > ~/.ssh/config
 
-set -x
+if [ ! -z "$REPO" ]; then
+  echo "Downloading from ${REPO} ...";
 
-REPOSRC=$1
-SHA=$2
+  if [ -z "$HASH" ]; then
+    HASH="master";
+  fi
+  echo "... checking out ${HASH}";
 
-# We do it this way so that we can abstract if from just git later on
-GITCACHE=$PWD/.git
+  # We do it this way so that we can abstract if from just git later on
+  GITCACHE=$PWD/.git
 
-if [ ! -d $GITCACHE ]
-then
-    rm -rf *
-    rm -rf .*
-    git init .
-    git remote add origin "$REPOSRC"
-    git fetch origin "$SHA"
-    git reset --hard FETCH_HEAD
+  if [ ! -d $GITCACHE ]; then
+      echo "Creating new repository ...";
+      rm -rf * &> /dev/null || true
+      rm -rf .* &> /dev/null || true
+      git init .
+      git remote add origin "$REPO"
+      git fetch origin
+      git reset --hard "$HASH"
 
-else
-    git fetch "$REPOSRC"
-    git checkout --force "$SHA"
+  else
+      echo "Upgrading repository ...";
+      git fetch origin
+      git checkout --force "$HASH"
+  fi
 fi
-

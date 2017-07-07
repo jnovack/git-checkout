@@ -1,11 +1,11 @@
 FROM alpine:latest
 
-RUN mkdir -p /app
-
 WORKDIR /app
-
+VOLUME /app
 ENTRYPOINT ["/entrypoint.sh"]
-
-RUN apk add --update --no-cache git openssh
-
 COPY entrypoint.sh /
+
+RUN \
+	apk add --no-cache git openssh && \
+	mkdir -p /app
+
