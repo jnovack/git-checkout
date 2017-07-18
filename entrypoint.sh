@@ -1,5 +1,5 @@
 #!/bin/sh
-set -e
+set -x
 
 mkdir -p ~/.ssh
 
@@ -32,7 +32,7 @@ if [ ! -z "$REPO" ]; then
       git init .
       git remote add origin "$REPO"
       git fetch origin
-      git reset --hard "$HASH"
+      git checkout --force "$HASH"
 
   else
       echo "Upgrading repository ...";
