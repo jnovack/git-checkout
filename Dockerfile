@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-WORKDIR /app
+WORKDIR /src
 
 RUN \
 	apk add --no-cache git openssh

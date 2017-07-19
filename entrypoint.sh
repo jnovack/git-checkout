@@ -47,6 +47,6 @@ if [ ! -z "$REPO" ]; then
   fi
 fi
 
-echo "$(find /app -type f | wc -l) files"
-echo "$(find /app -type d | wc -l) dirs"
-du -chd 0 /app | tail -1
+echo "$(find . -type f | wc -l) files"
+echo "$(find . -type d | wc -l) dirs"
+du -chd 0 . | tail -1
