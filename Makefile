@@ -4,8 +4,10 @@ all: build run
 
 dev: build exec
 
-build:
+clean:
 	docker rmi jnovack/git-checkout || true
+
+build:
 	docker build -t jnovack/git-checkout .
 
 run:

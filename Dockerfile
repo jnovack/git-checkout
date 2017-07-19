@@ -1,10 +1,8 @@
 FROM alpine:latest
 
-WORKDIR /website
-VOLUME /website
-ENTRYPOINT ["/entrypoint.sh"]
-COPY entrypoint.sh /
+WORKDIR /app
 
 RUN \
-	apk add --no-cache git openssh && \
-	mkdir -p /website
+	apk add --no-cache git openssh
+
+COPY entrypoint.sh /

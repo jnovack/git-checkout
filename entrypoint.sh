@@ -1,5 +1,5 @@
 #!/bin/sh
-set -x
+set -e
 
 mkdir -p ~/.ssh
 
@@ -17,10 +17,15 @@ echo -e "Host * \n    StrictHostKeyChecking no" > ~/.ssh/config
 if [ ! -z "$REPO" ]; then
   echo "Downloading from ${REPO} ...";
 
-  if [ -z "$HASH" ]; then
-    HASH="master";
+  if [ -z "$BRANCH" ]; then
+    BRANCH="master";
   fi
-  echo "... checking out ${HASH}";
+  echo "... checking out ${BRANCH}";
+
+  if [ -z "$HASH" ]; then
+    HASH="HEAD";
+  fi
+  echo "... resetting to ${HASH}";
 
   # We do it this way so that we can abstract if from just git later on
   GITCACHE=$PWD/.git
@@ -32,11 +37,16 @@ if [ ! -z "$REPO" ]; then
       git init .
       git remote add origin "$REPO"
       git fetch origin
-      git checkout --force "$HASH"
-
+      git checkout --force "$BRANCH"
+      git reset --hard "$HASH"
   else
       echo "Upgrading repository ...";
       git fetch origin
-      git checkout --force "$HASH"
+      git checkout --force "$BRANCH"
+      git reset --hard "$HASH"
   fi
 fi
+
+echo "$(find /app -type f | wc -l) files"
+echo "$(find /app -type d | wc -l) dirs"
+du -chd 0 /app | tail -1
