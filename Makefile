@@ -1,4 +1,4 @@
-.PHONY: build run exec push dev all
+.PHONY: build run exec dev all
 
 all: build run
 
@@ -15,6 +15,3 @@ run:
 
 exec:
 	docker run -it --rm --entrypoint=/bin/sh jnovack/git-checkout
-
-push: build
-	docker push jnovack/git-checkout
