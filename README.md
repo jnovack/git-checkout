@@ -24,32 +24,32 @@ COPY --from=builder /src /app
 
 ## Environment Variables
 
-### `REPO`
+### REPO
 
 *(string, required)*
 
 A `http(s)://` or `ssh://` git repository url.
 
-### `BRANCH`
+### BRANCH
 
 *(string, optional)*
 
 The name of your branch to download. (_Default:_ `master`)
 
-### `HASH`
+### HASH
 
 *(string, optional)*
 
 The hash of the commit. (_Default:_ `HEAD`)
 
-### `SSH_KEY`
+### SSH_KEY
 
 *(string, optional, supports _FILE)*
 
 SSH private key for authenticated repository download.  `SSH_KEY` will always
 override `SSH_KEY_FILE`, if provided.
 
-#### `SSH_KEY_FILE`
+#### SSH_KEY_FILE
 
 In the event you wish to store the key in Docker Secrets, or you want to mount
 in the file directly, you can set this to the file path within the container.
